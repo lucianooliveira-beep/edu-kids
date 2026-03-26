@@ -1,9 +1,18 @@
 import ModuleCard from '@/components/ModuleCard'
+import Avatar from '@/components/Avatar'
 import Link from 'next/link'
 
 export default function Home() {
   return (
     <div>
+      {/* Avatar mascote */}
+      <div className="flex justify-center mb-10 mt-2">
+        <Avatar
+          message="Oi! Eu sou o Edu, seu professor coruja! Clique em mim para me ouvir. Vamos aprender juntos? Escolha um módulo e comece sua aventura!"
+          autoPlay
+        />
+      </div>
+
       {/* Hero Section */}
       <div className="text-center mb-14">
         <div className="relative inline-block">
