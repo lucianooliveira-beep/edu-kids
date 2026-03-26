@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Avatar from '@/components/Avatar'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -33,6 +34,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md border-4 border-purple-200">
+        <div className="mb-6">
+          <Avatar message="Olá! Para continuar aprendendo, entre com seu email e senha. Não tem conta ainda? Crie uma gratuitamente!" autoPlay />
+        </div>
         <div className="text-center mb-6">
           <span className="text-6xl">🔐</span>
           <h1 className="text-3xl font-extrabold text-purple-600 mt-2">Entrar</h1>

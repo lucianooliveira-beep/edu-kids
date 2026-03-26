@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Avatar from '@/components/Avatar'
 
 interface ScoreData {
   id: string
@@ -70,6 +71,9 @@ export default function PainelPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <div className="flex justify-center mb-8">
+        <Avatar message={`Parabéns, ${session.user?.name}! Você tem ${totalStars} estrelas e está no nível ${medal.label}. Continue assim, você está indo muito bem!`} autoPlay />
+      </div>
       <div className="text-center mb-8">
         <span className="text-6xl">📊</span>
         <h1 className="text-4xl font-extrabold text-purple-600 mt-2">

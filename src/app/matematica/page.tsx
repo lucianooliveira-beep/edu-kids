@@ -1,8 +1,12 @@
 import ModuleCard from '@/components/ModuleCard'
+import Avatar from '@/components/Avatar'
 
 export default function MatematicaPage() {
   return (
     <div>
+      <div className="flex justify-center mb-8">
+        <Avatar message="Oba! Matemática é divertida! Aqui você vai aprender números, operações, tabuada e resolver problemas incríveis. Por onde quer começar?" autoPlay />
+      </div>
       <div className="text-center mb-10">
         <span className="text-6xl">🔢</span>
         <h1 className="text-4xl font-extrabold text-teal-600 mt-2">Matemática</h1>

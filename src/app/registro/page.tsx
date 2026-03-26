@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Avatar from '@/components/Avatar'
 
 export default function RegistroPage() {
   const [name, setName] = useState('')
@@ -36,6 +37,9 @@ export default function RegistroPage() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
       <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md border-4 border-emerald-200">
+        <div className="mb-6">
+          <Avatar message="Que ótimo! Vamos criar sua conta! Preencha seu nome, email, uma senha e sua idade. Logo você estará aprendendo com a gente!" autoPlay />
+        </div>
         <div className="text-center mb-6">
           <span className="text-6xl">🌟</span>
           <h1 className="text-3xl font-extrabold text-emerald-600 mt-2">Criar Conta</h1>

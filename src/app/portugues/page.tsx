@@ -1,8 +1,12 @@
 import ModuleCard from '@/components/ModuleCard'
+import Avatar from '@/components/Avatar'
 
 export default function PortuguesPage() {
   return (
     <div>
+      <div className="flex justify-center mb-8">
+        <Avatar message="Bem-vindo ao módulo de Português! Aqui você vai aprender o alfabeto, sílabas, leitura, escrita e muito mais. Escolha uma atividade!" autoPlay />
+      </div>
       <div className="text-center mb-10">
         <span className="text-6xl">📖</span>
         <h1 className="text-4xl font-extrabold text-indigo-600 mt-2">Português</h1>
