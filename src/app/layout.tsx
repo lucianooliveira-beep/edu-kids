@@ -3,6 +3,7 @@ import './globals.css'
 import { SessionProvider } from 'next-auth/react'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import ChatTutor from '@/components/ChatTutor'
 
 export default function RootLayout({
   children,
@@ -22,6 +23,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <ChatTutor />
         </SessionProvider>
       </body>
     </html>

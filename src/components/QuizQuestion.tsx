@@ -11,6 +11,8 @@ interface QuizQuestionProps {
 export default function QuizQuestion({ pergunta, opcoes, respostaCorreta, onAnswer }: QuizQuestionProps) {
   const [selected, setSelected] = useState<number | null>(null)
   const [answered, setAnswered] = useState(false)
+  const [dica, setDica] = useState('')
+  const [loadingDica, setLoadingDica] = useState(false)
 
   const handleSelect = (index: number) => {
     if (answered) return
@@ -38,6 +40,24 @@ export default function QuizQuestion({ pergunta, opcoes, respostaCorreta, onAnsw
     return 'bg-white border-gray-200 opacity-50'
   }
 
+  const pedirDica = async () => {
+    if (loadingDica || dica) return
+    setLoadingDica(true)
+    try {
+      const res = await fetch('/api/dica', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pergunta, opcoes }),
+      })
+      const data = await res.json()
+      setDica(data.dica || 'Tente pensar com calma!')
+    } catch {
+      setDica('Tente pensar com calma!')
+    } finally {
+      setLoadingDica(false)
+    }
+  }
+
   return (
     <div className="mb-6">
       <h3 className="text-lg font-bold text-gray-800 mb-3">{pergunta}</h3>
@@ -53,6 +73,20 @@ export default function QuizQuestion({ pergunta, opcoes, respostaCorreta, onAnsw
           </button>
         ))}
       </div>
+      {!answered && (
+        <button
+          onClick={pedirDica}
+          disabled={loadingDica || !!dica}
+          className="mt-2 text-sm text-purple-600 hover:text-purple-800 font-semibold disabled:opacity-50"
+        >
+          {loadingDica ? '💭 Pensando...' : dica ? '💡 Dica abaixo' : '💡 Pedir uma dica'}
+        </button>
+      )}
+      {dica && (
+        <div className="mt-2 bg-purple-50 border border-purple-200 rounded-xl p-3 text-sm text-purple-800">
+          {dica}
+        </div>
+      )}
     </div>
   )
 }

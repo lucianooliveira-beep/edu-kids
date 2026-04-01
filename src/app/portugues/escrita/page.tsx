@@ -38,6 +38,10 @@ export default function EscritaPage() {
   const [score, setScore] = useState(0)
   const [finished, setFinished] = useState(false)
   const [selectedWords, setSelectedWords] = useState<string[]>([])
+  const [modo, setModo] = useState<'exercicios' | 'escrever'>('exercicios')
+  const [textoLivre, setTextoLivre] = useState('')
+  const [correcao, setCorrecao] = useState('')
+  const [loadingCorrecao, setLoadingCorrecao] = useState(false)
 
   const ex = exercicios[currentIndex]
 
@@ -99,6 +103,25 @@ export default function EscritaPage() {
     )
   }
 
+  const corrigirTexto = async () => {
+    if (!textoLivre.trim() || loadingCorrecao) return
+    setLoadingCorrecao(true)
+    setCorrecao('')
+    try {
+      const res = await fetch('/api/corrigir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto: textoLivre }),
+      })
+      const data = await res.json()
+      setCorrecao(data.correcao || 'Tente novamente!')
+    } catch {
+      setCorrecao('Ops! Nao consegui corrigir agora. Tente novamente!')
+    } finally {
+      setLoadingCorrecao(false)
+    }
+  }
+
   return (
     <div className="max-w-2xl mx-auto">
       <div className="text-center mb-6">
@@ -106,6 +129,49 @@ export default function EscritaPage() {
         <h1 className="text-4xl font-extrabold text-green-600 mt-2">Escrita</h1>
         <p className="text-gray-500">Complete palavras e ordene frases!</p>
       </div>
+
+      <div className="flex gap-3 justify-center mb-6">
+        <button
+          onClick={() => setModo('exercicios')}
+          className={`px-4 py-2 rounded-xl font-bold transition ${modo === 'exercicios' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+        >
+          Exercicios
+        </button>
+        <button
+          onClick={() => setModo('escrever')}
+          className={`px-4 py-2 rounded-xl font-bold transition ${modo === 'escrever' ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+        >
+          Escrever Texto
+        </button>
+      </div>
+
+      {modo === 'escrever' ? (
+        <div className="bg-white rounded-3xl shadow-xl p-8 border-4 border-green-200">
+          <p className="text-center text-gray-500 mb-4">Escreva um texto e a IA vai te ajudar a melhorar!</p>
+          <textarea
+            value={textoLivre}
+            onChange={e => setTextoLivre(e.target.value)}
+            placeholder="Escreva aqui seu texto..."
+            rows={6}
+            className="w-full px-4 py-3 border-2 border-green-200 rounded-2xl focus:outline-none focus:border-green-400 resize-y text-lg"
+          />
+          <div className="flex gap-3 justify-center mt-4">
+            <button
+              onClick={corrigirTexto}
+              disabled={!textoLivre.trim() || loadingCorrecao}
+              className="bg-green-500 text-white font-bold px-6 py-3 rounded-xl hover:bg-green-600 disabled:opacity-50 transition"
+            >
+              {loadingCorrecao ? '🤔 Corrigindo...' : '✨ Corrigir com IA'}
+            </button>
+          </div>
+          {correcao && (
+            <div className="mt-4 bg-green-50 border-2 border-green-200 rounded-2xl p-4 text-gray-700 whitespace-pre-wrap">
+              {correcao}
+            </div>
+          )}
+        </div>
+      ) : (
+      <>
 
       <ProgressBar current={currentIndex + 1} total={exercicios.length} label="Progresso" />
 
@@ -189,6 +255,8 @@ export default function EscritaPage() {
           )}
         </div>
       </div>
+      </>
+      )}
     </div>
   )
 }
